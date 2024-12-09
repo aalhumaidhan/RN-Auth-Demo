@@ -1,8 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import colors from "../../data/styling/colors";
+import { getNote } from "../../api/notes";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../components/Loading";
 
-const NoteDetails = () => {
+const NoteDetails = ({ route }) => {
+  const { id } = route.params;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getnote", id],
+    queryFn: () => getNote(id),
+  });
+
+  if (isLoading) return <Loading />;
   return (
     <View
       style={{
@@ -35,7 +45,7 @@ const NoteDetails = () => {
             marginBottom: 15,
           }}
         >
-          Dawood
+          {data?.title}
         </Text>
 
         <View
@@ -46,24 +56,17 @@ const NoteDetails = () => {
             marginBottom: 20,
           }}
         >
-          <View
-            style={{
-              backgroundColor: colors.tertiary,
-              padding: 12,
-              borderRadius: 10,
-            }}
-          >
-            <Text style={{ color: colors.white }}>Topic 1</Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: colors.tertiary,
-              padding: 12,
-              borderRadius: 10,
-            }}
-          >
-            <Text style={{ color: colors.white }}>Topic 2</Text>
-          </View>
+          {data?.topics?.map((topic) => (
+            <View
+              style={{
+                backgroundColor: colors.tertiary,
+                padding: 12,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ color: colors.white }}>{topic}</Text>
+            </View>
+          ))}
         </View>
 
         <Text
@@ -73,9 +76,7 @@ const NoteDetails = () => {
             lineHeight: 24,
           }}
         >
-          This is the note body text. It contains the main content of the note.
-          The styling matches the app's design system using the same color
-          scheme and similar styling patterns.
+          {data?.body}
         </Text>
       </View>
     </View>

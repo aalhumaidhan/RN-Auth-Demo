@@ -4,7 +4,7 @@ import colors from "../data/styling/colors";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../navigation";
 
-const Note = () => {
+const Note = ({ title, topics, user, _id }) => {
   const navigation = useNavigation();
   return (
     <View
@@ -35,23 +35,23 @@ const Note = () => {
       >
         <Text
           style={{
-            color: colors.black,
+            color: colors.white,
             fontSize: 24,
             fontWeight: "bold",
             marginBottom: 8,
           }}
         >
-          Dawood
+          {title}
         </Text>
         <Text
           style={{
-            color: colors.black,
+            color: colors.white,
             fontSize: 16,
             fontWeight: "600",
             opacity: 0.8,
           }}
         >
-          Created By: Dawood
+          Created By: {user?.name}
         </Text>
 
         <View
@@ -62,26 +62,18 @@ const Note = () => {
             marginBottom: 10,
           }}
         >
-          <View
-            style={{
-              backgroundColor: colors.tertiary,
-              padding: 12,
-              borderRadius: 10,
-              marginBottom: 5,
-            }}
-          >
-            <Text>Topic 1</Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: colors.tertiary,
-              padding: 12,
-              borderRadius: 10,
-              marginBottom: 5,
-            }}
-          >
-            <Text>Topic 2</Text>
-          </View>
+          {topics?.map((topic) => (
+            <View
+              style={{
+                backgroundColor: colors.tertiary,
+                padding: 12,
+                borderRadius: 10,
+                marginBottom: 5,
+              }}
+            >
+              <Text>{topic}</Text>
+            </View>
+          ))}
         </View>
         <TouchableOpacity
           style={{
@@ -92,7 +84,9 @@ const Note = () => {
             alignItems: "center",
             marginBottom: 5,
           }}
-          onPress={() => navigation.navigate(ROUTES.HOME.NOTE_DETAILS)}
+          onPress={() =>
+            navigation.navigate(ROUTES.HOME.NOTE_DETAILS, { id: _id })
+          }
         >
           <Text
             style={{

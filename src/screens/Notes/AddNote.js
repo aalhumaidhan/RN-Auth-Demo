@@ -9,11 +9,17 @@ import {
 import React, { useState } from "react";
 import colors from "../../data/styling/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useMutation } from "@tanstack/react-query";
+import { createNote } from "../../api/notes";
 
 const AddNote = () => {
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([""]);
   const [noteBody, setNoteBody] = useState("");
+
+  const { mutate } = useMutation({
+    mutationFn: () => createNote({ title, topics, body: noteBody }),
+  });
 
   const addTopic = () => {
     setTopics([...topics, ""]);
@@ -23,6 +29,16 @@ const AddNote = () => {
     const newTopics = [...topics];
     newTopics[index] = text;
     setTopics(newTopics);
+  };
+
+  const handleAddNote = () => {
+    console.log({
+      title,
+      noteBody,
+      topics,
+    });
+
+    mutate();
   };
 
   return (
@@ -79,7 +95,7 @@ const AddNote = () => {
               borderColor: "rgba(0,0,0,0.1)",
             }}
             value={title}
-            onChangeText={setTitle}
+            onChangeText={(value) => setTitle(value)}
             placeholder="Note Title"
           />
 
@@ -153,7 +169,7 @@ const AddNote = () => {
               borderColor: "rgba(0,0,0,0.1)",
             }}
             value={noteBody}
-            onChangeText={setNoteBody}
+            onChangeText={(value) => setNoteBody(value)}
             placeholder="Note Content"
             multiline
             numberOfLines={4}
@@ -173,6 +189,7 @@ const AddNote = () => {
               borderWidth: 1,
               borderColor: "rgba(0,0,0,0.1)",
             }}
+            onPress={handleAddNote}
           >
             <Text
               style={{

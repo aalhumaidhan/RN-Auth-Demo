@@ -2,7 +2,7 @@ import { Text, View, Image } from "react-native";
 import React from "react";
 import colors from "../data/styling/colors";
 
-const UserProfileCard = ({ imageUrl, email, username }) => {
+const UserProfileCard = ({ image, email, name }) => {
   return (
     <View
       style={{
@@ -20,7 +20,7 @@ const UserProfileCard = ({ imageUrl, email, username }) => {
     >
       <Image
         source={{
-          uri: imageUrl ? imageUrl : "https://via.placeholder.com/150",
+          uri: image,
         }}
         style={{
           width: 80,
@@ -34,15 +34,15 @@ const UserProfileCard = ({ imageUrl, email, username }) => {
           fontSize: 24,
           fontWeight: "bold",
           marginBottom: 8,
-          color: colors.black,
+          color: colors.white,
         }}
       >
-        {username ? username : "Dawood"}
+        {name ? name : "Dawood"}
       </Text>
       <Text
         style={{
           fontSize: 16,
-          color: colors.black,
+          color: colors.white,
           fontWeight: "600",
           opacity: 0.8,
         }}
